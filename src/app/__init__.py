@@ -73,7 +73,10 @@ def result():
     """
     task_id = request.args.get('task_id')
     result_file_path = os.path.join(default.PROJECT_DIR, 'app', 'temp_files', str(task_id))
-    with open(result_file_path, 'rb') as fd:
-        res = fd.read()
+    try:
+        with open(result_file_path, 'rb') as fd:
+            res = fd.read()
+    except IOError:
+        return 'Not Ready'
     os.remove(result_file_path)
     return res if res else 'Not Ready'
